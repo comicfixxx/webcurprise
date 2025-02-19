@@ -1,6 +1,6 @@
 
 import { MysteryLink } from "@/data/links";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 
 interface LinkCardProps {
   link: MysteryLink;
@@ -16,9 +16,14 @@ export function LinkCard({ link }: LinkCardProps) {
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          <span className="inline-block px-3 py-1 text-xs rounded-full bg-secondary text-secondary-foreground capitalize mb-2 sm:mb-3 touch-manipulation">
-            {link.category}
-          </span>
+          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+            <span className="inline-block px-3 py-1 text-xs rounded-full bg-secondary text-secondary-foreground capitalize touch-manipulation">
+              {link.category}
+            </span>
+            {link.isFeatured && (
+              <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+            )}
+          </div>
           <h3 className="text-lg sm:text-xl font-semibold text-accent group-hover:text-primary transition-colors line-clamp-2">
             {link.title}
           </h3>

@@ -1,16 +1,17 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { GenerateButton } from "@/components/GenerateButton";
 import { LinkCard } from "@/components/LinkCard";
 import { BusinessPromotionForm } from "@/components/BusinessPromotionForm";
 import { Category, MysteryLink, links } from "@/data/links";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
-const generateRandomLink = (category: Category | null): MysteryLink => {
+const generateRandomLink = (category: Category | null, allLinks: MysteryLink[]): MysteryLink => {
   const filteredLinks = category
-    ? links.filter((link) => link.category === category)
-    : links;
+    ? allLinks.filter((link) => link.category === category)
+    : allLinks;
   
   return filteredLinks[Math.floor(Math.random() * filteredLinks.length)];
 };
@@ -19,13 +20,41 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [generatedLinks, setGeneratedLinks] = useState<MysteryLink[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [allLinks, setAllLinks] = useState<MysteryLink[]>(links);
+
+  useEffect(() => {
+    const fetchFeaturedLinks = async () => {
+      const { data: featuredLinks, error } = await supabase
+        .from('featured_links')
+        .select('*')
+        .eq('is_active', true)
+        .eq('payment_status', 'completed');
+
+      if (error) {
+        console.error('Error fetching featured links:', error);
+        return;
+      }
+
+      const formattedFeaturedLinks: MysteryLink[] = featuredLinks.map(link => ({
+        title: link.business_name,
+        description: link.description,
+        url: link.website_url,
+        category: 'featured' as Category,
+        isFeatured: true
+      }));
+
+      setAllLinks([...formattedFeaturedLinks, ...links]);
+    };
+
+    fetchFeaturedLinks();
+  }, []);
 
   const handleGenerate = () => {
     setIsGenerating(true);
     
     // Simulate a loading state
     setTimeout(() => {
-      const newLink = generateRandomLink(selectedCategory);
+      const newLink = generateRandomLink(selectedCategory, allLinks);
       
       if (generatedLinks.length > 0 && newLink.url === generatedLinks[0].url) {
         toast.error("Got a duplicate link! Trying again...");

@@ -1,60 +1,55 @@
-
-export type Category = "productivity" | "learning" | "entertainment" | "tools";
+export type Category = 
+  | "entertainment" 
+  | "education" 
+  | "technology" 
+  | "business" 
+  | "lifestyle" 
+  | "gaming"
+  | "featured";
 
 export interface MysteryLink {
-  url: string;
   title: string;
   description: string;
+  url: string;
   category: Category;
+  isFeatured?: boolean;
 }
 
 export const links: MysteryLink[] = [
   {
-    url: "https://notion.so",
-    title: "Notion",
-    description: "All-in-one workspace for notes, tasks, and collaboration",
-    category: "productivity",
-  },
-  {
-    url: "https://coursera.org",
-    title: "Coursera",
-    description: "Learn skills from world-class universities and companies",
-    category: "learning",
-  },
-  {
-    url: "https://chess.com",
-    title: "Chess.com",
-    description: "Play chess online and improve your skills",
+    title: "Example Link 1",
+    description: "This is an example description for link 1.",
+    url: "https://example1.com",
     category: "entertainment",
   },
   {
-    url: "https://canva.com",
-    title: "Canva",
-    description: "Create beautiful designs easily",
-    category: "tools",
+    title: "Example Link 2",
+    description: "This is an example description for link 2.",
+    url: "https://example2.com",
+    category: "education",
   },
   {
-    url: "https://duolingo.com",
-    title: "Duolingo",
-    description: "Learn languages for free",
-    category: "learning",
+    title: "Example Link 3",
+    description: "This is an example description for link 3.",
+    url: "https://example3.com",
+    category: "technology",
   },
   {
-    url: "https://todoist.com",
-    title: "Todoist",
-    description: "Organize your tasks and life",
-    category: "productivity",
+    title: "Example Link 4",
+    description: "This is an example description for link 4.",
+    url: "https://example4.com",
+    category: "business",
   },
   {
-    url: "https://spotify.com",
-    title: "Spotify",
-    description: "Music and podcast streaming",
-    category: "entertainment",
+    title: "Example Link 5",
+    description: "This is an example description for link 5.",
+    url: "https://example5.com",
+    category: "lifestyle",
   },
   {
-    url: "https://figma.com",
-    title: "Figma",
-    description: "Collaborative interface design tool",
-    category: "tools",
+    title: "Example Link 6",
+    description: "This is an example description for link 6.",
+    url: "https://example6.com",
+    category: "gaming",
   },
 ];
