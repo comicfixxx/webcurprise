@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { GenerateButton } from "@/components/GenerateButton";
 import { LinkCard } from "@/components/LinkCard";
+import { BusinessPromotionForm } from "@/components/BusinessPromotionForm";
 import { Category, MysteryLink, links } from "@/data/links";
 import { toast } from "sonner";
 
@@ -40,7 +41,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-secondary px-4 sm:px-6 py-8 sm:py-12">
-      <div className="max-w-2xl mx-auto space-y-8 sm:space-y-12">
+      <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
         <div className="text-center space-y-3 sm:space-y-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-accent">
             Mystery Link Generator
@@ -50,20 +51,26 @@ const Index = () => {
           </p>
         </div>
 
-        <div className="space-y-6 sm:space-y-8">
-          <CategoryFilter
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6 sm:space-y-8">
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
 
-          <div className="flex justify-center">
-            <GenerateButton onClick={handleGenerate} isGenerating={isGenerating} />
+            <div className="flex justify-center">
+              <GenerateButton onClick={handleGenerate} isGenerating={isGenerating} />
+            </div>
+
+            <div className="space-y-3 sm:space-y-4">
+              {generatedLinks.map((link, index) => (
+                <LinkCard key={`${link.url}-${index}`} link={link} />
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-3 sm:space-y-4">
-            {generatedLinks.map((link, index) => (
-              <LinkCard key={`${link.url}-${index}`} link={link} />
-            ))}
+          <div>
+            <BusinessPromotionForm />
           </div>
         </div>
       </div>
