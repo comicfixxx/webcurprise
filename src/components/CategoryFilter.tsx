@@ -7,7 +7,7 @@ interface CategoryFilterProps {
   onSelectCategory: (category: Category | null) => void;
 }
 
-const categories: Category[] = ["productivity", "learning", "entertainment", "tools"];
+const categories: Category[] = ["entertainment", "education", "technology", "business", "lifestyle", "gaming", "featured"];
 
 export function CategoryFilter({ selectedCategory, onSelectCategory }: CategoryFilterProps) {
   return (
