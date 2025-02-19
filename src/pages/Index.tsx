@@ -73,10 +73,10 @@ const Index = () => {
       <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
         <div className="text-center space-y-3 sm:space-y-4">
           <h1 className="text-3xl sm:text-4xl font-bold text-accent">
-            Mystery Link Generator
+            Discover Amazing Websites
           </h1>
           <p className="text-secondary-foreground/80 text-sm sm:text-base px-4">
-            Discover amazing websites, one click at a time
+            Explore curated links to amazing websites, one click at a time. Your next favorite discovery awaits!
           </p>
         </div>
 
