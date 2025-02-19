@@ -11,12 +11,12 @@ const categories: Category[] = ["productivity", "learning", "entertainment", "to
 
 export function CategoryFilter({ selectedCategory, onSelectCategory }: CategoryFilterProps) {
   return (
-    <div className="flex flex-wrap gap-2 justify-center">
+    <div className="flex flex-wrap gap-2 justify-center px-2">
       <button
         onClick={() => onSelectCategory(null)}
         className={cn(
-          "px-4 py-1 rounded-full text-sm transition-colors",
-          "border border-primary hover:bg-primary/10",
+          "px-4 py-2 sm:py-1 rounded-full text-sm transition-colors touch-manipulation",
+          "border border-primary hover:bg-primary/10 active:bg-primary/20",
           !selectedCategory && "bg-primary text-primary-foreground"
         )}
       >
@@ -27,8 +27,8 @@ export function CategoryFilter({ selectedCategory, onSelectCategory }: CategoryF
           key={category}
           onClick={() => onSelectCategory(category)}
           className={cn(
-            "px-4 py-1 rounded-full text-sm capitalize transition-colors",
-            "border border-primary hover:bg-primary/10",
+            "px-4 py-2 sm:py-1 rounded-full text-sm capitalize transition-colors touch-manipulation",
+            "border border-primary hover:bg-primary/10 active:bg-primary/20",
             selectedCategory === category && "bg-primary text-primary-foreground"
           )}
         >

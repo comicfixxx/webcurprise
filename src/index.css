@@ -29,9 +29,26 @@
 
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth scrolling for the whole page */
+  html {
+    @apply scroll-smooth;
+  }
+
+  /* Optimize touch targets for mobile */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  /* Prevent text size adjustment on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
   }
 }

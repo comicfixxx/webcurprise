@@ -39,16 +39,18 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary px-4 py-12">
-      <div className="max-w-2xl mx-auto space-y-12">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-accent">Mystery Link Generator</h1>
-          <p className="text-secondary-foreground/80">
+    <div className="min-h-screen bg-secondary px-4 sm:px-6 py-8 sm:py-12">
+      <div className="max-w-2xl mx-auto space-y-8 sm:space-y-12">
+        <div className="text-center space-y-3 sm:space-y-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-accent">
+            Mystery Link Generator
+          </h1>
+          <p className="text-secondary-foreground/80 text-sm sm:text-base px-4">
             Discover amazing websites, one click at a time
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           <CategoryFilter
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
@@ -58,7 +60,7 @@ const Index = () => {
             <GenerateButton onClick={handleGenerate} isGenerating={isGenerating} />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {generatedLinks.map((link, index) => (
               <LinkCard key={`${link.url}-${index}`} link={link} />
             ))}
