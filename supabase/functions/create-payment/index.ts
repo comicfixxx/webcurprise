@@ -16,13 +16,26 @@ serve(async (req) => {
   try {
     const { businessName, websiteUrl, description } = await req.json()
     
+    // Validate inputs
+    if (!businessName || !websiteUrl || !description) {
+      throw new Error('Missing required fields')
+    }
+
+    const key_id = Deno.env.get('RAZORPAY_KEY_ID')
+    const key_secret = Deno.env.get('RAZORPAY_KEY_SECRET')
+
+    if (!key_id || !key_secret) {
+      throw new Error('Missing Razorpay credentials')
+    }
+
     const razorpay = new Razorpay({
-      key_id: Deno.env.get('RAZORPAY_KEY_ID') || '',
-      key_secret: Deno.env.get('RAZORPAY_KEY_SECRET') || '',
+      key_id,
+      key_secret,
     })
 
+    // Create Razorpay order
     const payment = await razorpay.orders.create({
-      amount: 29900, // amount in smallest currency unit (paise)
+      amount: 29900, // ₹299 in paise
       currency: 'INR',
       receipt: `receipt_${Date.now()}`,
       notes: {
@@ -32,15 +45,26 @@ serve(async (req) => {
       }
     })
 
+    console.log('Payment order created:', payment)
+
     return new Response(
-      JSON.stringify(payment),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({
+        ...payment,
+        key_id,
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200
+      }
     )
   } catch (error) {
     console.error('Error creating payment:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to create payment' }),
-      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: error.message || 'Failed to create payment' }),
+      { 
+        status: 400, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     )
   }
 })

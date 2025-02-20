@@ -22,14 +22,22 @@ export function BusinessPromotionForm() {
     setIsLoading(true);
 
     try {
+      // Basic validation
+      if (!formData.businessName || !formData.websiteUrl || !formData.description) {
+        toast.error("Please fill in all fields");
+        return;
+      }
+
       // Create payment order
       const response = await supabase.functions.invoke('create-payment', {
         body: formData
       });
 
-      if (response.error) throw response.error;
+      if (response.error) throw new Error(response.error.message);
+      if (!response.data) throw new Error('No response from payment service');
 
       const order = response.data;
+      console.log('Payment order received:', order);
 
       // Initialize Razorpay
       const options = {
@@ -40,32 +48,41 @@ export function BusinessPromotionForm() {
         description: "Business Promotion Fee",
         order_id: order.id,
         handler: async (response: any) => {
-          // Insert into featured_links after successful payment
-          const { error } = await supabase
-            .from('featured_links')
-            .insert({
-              business_name: formData.businessName,
-              website_url: formData.websiteUrl,
-              description: formData.description,
-              payment_status: 'completed',
-              is_active: true
+          console.log('Payment successful:', response);
+          
+          try {
+            // Insert into featured_links after successful payment
+            const { error } = await supabase
+              .from('featured_links')
+              .insert({
+                business_name: formData.businessName,
+                website_url: formData.websiteUrl,
+                description: formData.description,
+                payment_status: 'completed',
+                is_active: true
+              });
+
+            if (error) throw error;
+
+            toast.success("Your business link has been added successfully!");
+            setFormData({
+              businessName: "",
+              websiteUrl: "",
+              description: "",
             });
-
-          if (error) {
+          } catch (error) {
             console.error('Error saving link:', error);
-            toast.error("Failed to save your business link");
-            return;
+            toast.error("Failed to save your business link. Please contact support.");
           }
-
-          toast.success("Your business link has been added successfully!");
-          setFormData({
-            businessName: "",
-            websiteUrl: "",
-            description: "",
-          });
         },
         prefill: {
           name: formData.businessName,
+        },
+        modal: {
+          ondismiss: function() {
+            setIsLoading(false);
+            toast.error("Payment cancelled");
+          }
         },
         theme: {
           color: "#6366f1",
@@ -76,7 +93,7 @@ export function BusinessPromotionForm() {
       razorpay.open();
     } catch (error) {
       console.error('Payment error:', error);
-      toast.error("Failed to initiate payment");
+      toast.error(error.message || "Failed to initiate payment");
     } finally {
       setIsLoading(false);
     }
@@ -103,6 +120,7 @@ export function BusinessPromotionForm() {
             onChange={(e) => setFormData(prev => ({ ...prev, businessName: e.target.value }))}
             className="w-full p-2 rounded-md border bg-background"
             required
+            maxLength={100}
           />
         </div>
         
@@ -117,6 +135,8 @@ export function BusinessPromotionForm() {
             onChange={(e) => setFormData(prev => ({ ...prev, websiteUrl: e.target.value }))}
             className="w-full p-2 rounded-md border bg-background"
             required
+            pattern="https?://.*"
+            title="Please enter a valid URL starting with http:// or https://"
           />
         </div>
         
@@ -131,6 +151,7 @@ export function BusinessPromotionForm() {
             className="w-full p-2 rounded-md border bg-background"
             rows={3}
             required
+            maxLength={500}
           />
         </div>
 

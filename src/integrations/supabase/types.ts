@@ -39,6 +39,51 @@ export type Database = {
         }
         Relationships: []
       }
+      scraping_projects: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          is_trial: boolean | null
+          payment_id: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"] | null
+          price_usd: number | null
+          result_data: Json | null
+          status: Database["public"]["Enums"]["scraping_status"] | null
+          updated_at: string | null
+          url: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          is_trial?: boolean | null
+          payment_id?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          price_usd?: number | null
+          result_data?: Json | null
+          status?: Database["public"]["Enums"]["scraping_status"] | null
+          updated_at?: string | null
+          url: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          is_trial?: boolean | null
+          payment_id?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"] | null
+          price_usd?: number | null
+          result_data?: Json | null
+          status?: Database["public"]["Enums"]["scraping_status"] | null
+          updated_at?: string | null
+          url?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -47,7 +92,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      payment_status: "pending" | "completed" | "failed"
+      scraping_status: "pending" | "in_progress" | "completed" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
